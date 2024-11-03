@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version "8.3.0"
+}
+
+group = 'dev.ninjdai'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://reposilite.worldseed.online/public"}
+}
+
+dependencies {
+    implementation "net.minestom:minestom-snapshots:${minestom_version}"
+    implementation "ca.atlasengine:atlas-projectiles:${atlasprojectiles_version}"
+
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.18.1"
+
+    implementation 'org.slf4j:slf4j-simple:2.0.16'
+
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21)) // Minestom has a minimum Java version of 21
+    }
+}
+
+tasks {
+    jar {
+        manifest {
+            attributes["Main-Class"] = "dev.ninjdai.splatcube.Main"
+        }
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
+    shadowJar {
+        mergeServiceFiles()
+        archiveClassifier.set("")
+    }
+}

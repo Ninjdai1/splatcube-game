@@ -1,0 +1,88 @@
+id = "barnacle_and_dime"
+name = "Barnacle and Dime"
+minHeight = 30
+[mapCenter]
+x = 68.5
+y = 45
+z = 194.5
+yaw = 90
+pitch = 90
+
+[team1Config]
+[[team1Config.spawnPos]]
+x = 4.5
+y = 45
+z = 208.5
+yaw = -90
+pitch = 0
+[[team1Config.spawnPos]]
+x = 3.5
+y = 45
+z = 206.5
+yaw = -90
+pitch = 0
+[[team1Config.spawnPos]]
+x = 3.5
+y = 45
+z = 204.5
+yaw = -90
+pitch = 0
+[[team1Config.spawnPos]]
+x = 4.5
+y = 45
+z = 202.5
+yaw = -90
+pitch = 0
+[team1Config.spawnViewPos]
+x = 8.5
+y = 47
+z = 205.5
+yaw = 90
+pitch = 30
+
+[team2Config]
+[[team2Config.spawnPos]]
+x = 132.5
+y = 45
+z = 180.5
+yaw = 90
+pitch = 0
+[[team2Config.spawnPos]]
+x = 133.5
+y = 45
+z = 182.5
+yaw = 90
+pitch = 0
+[[team2Config.spawnPos]]
+x = 133.5
+y = 45
+z = 184.5
+yaw = 90
+pitch = 0
+[[team2Config.spawnPos]]
+x = 132.5
+y = 45
+z = 186.5
+yaw = 90
+pitch = 0
+[team2Config.spawnViewPos]
+x = 128.5
+y = 47
+z = 183.5
+yaw = -90
+pitch = 30
+
+
+[cutscene]
+[cutscene.start]
+x = 16.5
+y = 62
+z = 194.5
+yaw = -90
+pitch = 29
+[cutscene.end]
+x = 96.5
+y = 62
+z = 209.5
+yaw = 150
+pitch = 45

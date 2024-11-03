@@ -1,0 +1,87 @@
+id = "robo_ROM-en"
+name = "Robo ROM-en"
+minHeight = -28
+[mapCenter]
+x = 23.5
+y = -17
+z = 76.5
+yaw = 90
+pitch = 90
+
+[team1Config]
+[[team1Config.spawnPos]]
+x = 5.5
+y = -9
+z = 21.5
+yaw = 0
+pitch = 0
+[[team1Config.spawnPos]]
+x = 7.5
+y = -9
+z = 20.5
+yaw = 0
+pitch = 0
+[[team1Config.spawnPos]]
+x = 9.5
+y = -9
+z = 20.5
+yaw = 0
+pitch = 0
+[[team1Config.spawnPos]]
+x = 11.5
+y = -9
+z = 21.5
+yaw = 0
+pitch = 0
+[team1Config.spawnViewPos]
+x = 8.5
+y = -7
+z = 25.5
+yaw = 180
+pitch = 30
+
+[team2Config]
+[[team2Config.spawnPos]]
+x = 41.5
+y = -9
+z = 131.5
+yaw = 180
+pitch = 0
+[[team2Config.spawnPos]]
+x = 39.5
+y = -9
+z = 132.5
+yaw = 180
+pitch = 0
+[[team2Config.spawnPos]]
+x = 37.5
+y = -9
+z = 132.5
+yaw = 180
+pitch = 0
+[[team2Config.spawnPos]]
+x = 35.5
+y = -9
+z = 131.5
+yaw = 180
+pitch = 0
+[team2Config.spawnViewPos]
+x = 38.5
+y = -7
+z = 127.5
+yaw = 0
+pitch = 30
+
+[cutscene]
+[cutscene.start]
+x = 23.5
+y = -10
+z = 117.5
+yaw = -145
+pitch = 30
+[cutscene.end]
+x = 39.5
+y = -10
+z = 45.5
+yaw = 54
+pitch = 26

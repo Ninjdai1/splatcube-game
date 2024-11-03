@@ -1,0 +1,87 @@
+id = "crableg_capital"
+name = "Crableg Capital"
+minHeight = 136
+[mapCenter]
+x = 228
+y = 155
+z = 178
+yaw = 90
+pitch = 90
+
+[team1Config]
+[[team1Config.spawnPos]]
+x = 218.5
+y = 155
+z = 230.5
+yaw = 180
+pitch = 0
+[[team1Config.spawnPos]]
+x = 216.5
+y = 155
+z = 231.5
+yaw = 180
+pitch = 0
+[[team1Config.spawnPos]]
+x = 214.5
+y = 155
+z = 231.5
+yaw = 180
+pitch = 0
+[[team1Config.spawnPos]]
+x = 212.5
+y = 155
+z = 230.5
+yaw = 180
+pitch = 0
+[team1Config.spawnViewPos]
+x = 215.5
+y = 157
+z = 226.5
+yaw = 0
+pitch = 30
+
+[team2Config]
+[[team2Config.spawnPos]]
+x = 237.5
+y = 155
+z = 125.5
+yaw = 0
+pitch = 0
+[[team2Config.spawnPos]]
+x = 239.5
+y = 155
+z = 124.5
+yaw = 0
+pitch = 0
+[[team2Config.spawnPos]]
+x = 241.5
+y = 155
+z = 124.5
+yaw = 0
+pitch = 0
+[[team2Config.spawnPos]]
+x = 243.5
+y = 155
+z = 125.5
+yaw = 0
+pitch = 0
+[team2Config.spawnViewPos]
+x = 240.5
+y = 157
+z = 129.5
+yaw = 180
+pitch = 30
+
+[cutscene]
+[cutscene.start]
+x = 257.5
+y = 155
+z = 157.5
+yaw = 110
+pitch = 38
+[cutscene.end]
+x = 208.5
+y = 158
+z = 205.5
+yaw = -143.3
+pitch = 25.6
