@@ -49,7 +49,7 @@ public class Main {
                 MAP = mapper.readValue(new File(String.format("worlds/%s.toml", mapName)), MapConfig.class);
             } else {
                 MAP = mapper.readValue(new File(
-                    String.format("worlds/%s.toml", List.of("barnacle_and_dime", "crableg_capital", "robo_ROM-en", "um-ami_ruins").get(new Random().nextInt(3)))
+                    String.format("worlds/%s.toml", List.of("barnacle_and_dime", "crableg_capital", "robo_ROM-en", "um-ami_ruins").get(new Random().nextInt(4)))
                 ), MapConfig.class);
             }
         } catch (IOException e) {
@@ -82,9 +82,8 @@ public class Main {
 
         MinecraftServer.getConnectionManager().setPlayerProvider(SplatPlayer::new);
 
-        OpenToLAN.open();
-        MinecraftServer.setBrandName("Playground");
+        MinecraftServer.setBrandName("Splatcube");
 
-        minecraftServer.start("0.0.0.0", 30065);
+        minecraftServer.start("0.0.0.0", 25565);
     }
 }

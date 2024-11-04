@@ -15,6 +15,7 @@ import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.entity.metadata.display.ItemDisplayMeta;
 import net.minestom.server.event.Event;
+import net.minestom.server.event.EventListener;
 import net.minestom.server.event.EventNode;
 import net.minestom.server.event.inventory.InventoryPreClickEvent;
 import net.minestom.server.event.item.ItemDropEvent;
@@ -46,8 +47,7 @@ public class EventHandler {
         player.sendResourcePacks(request);
     };
 
-    public static void onPlayerSpawn(PlayerSpawnEvent event) {
-        if (!event.isFirstSpawn()) return;
+    public static void onPlayerFirstSpawn(PlayerSpawnEvent event) {
         event.getPlayer().setGameMode(GameMode.SPECTATOR);
         if (event.getInstance().getPlayers().size() < 1/*for debugging purposes, will be 8*/) return;
 
@@ -159,7 +159,7 @@ public class EventHandler {
         node.addListener(AsyncPlayerConfigurationEvent.class, EventHandler::onPlayerConfiguration);
         node.addListener(ItemDropEvent.class, EventHandler::onDropItem);
         node.addListener(PlayerSwapItemEvent.class, EventHandler::onSwitchHands);
-        node.addListener(PlayerSpawnEvent.class, EventHandler::onPlayerSpawn);
+        node.addListener(EventListener.builder(PlayerSpawnEvent.class).handler(EventHandler::onPlayerFirstSpawn).filter(PlayerSpawnEvent::isFirstSpawn).build());
         node.addListener(PlayerStartSneakingEvent.class, EventHandler::onSneakStart);
         node.addListener(PlayerStopSneakingEvent.class, EventHandler::onSneakStop);
         node.addListener(InventoryPreClickEvent.class, EventHandler::onInventoryClick);

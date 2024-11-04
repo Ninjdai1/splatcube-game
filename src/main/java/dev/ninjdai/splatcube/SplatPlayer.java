@@ -4,11 +4,14 @@ import dev.ninjdai.splatcube.items.Items;
 import dev.ninjdai.splatcube.utils.BlockUtils;
 import lombok.Getter;
 import lombok.Setter;
-import net.minestom.server.entity.GameMode;
-import net.minestom.server.entity.Player;
+import net.minestom.server.coordinate.Point;
+import net.minestom.server.coordinate.Vec;
+import net.minestom.server.entity.*;
 import net.minestom.server.entity.attribute.Attribute;
+import net.minestom.server.entity.metadata.display.ItemDisplayMeta;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
 import net.minestom.server.network.player.PlayerConnection;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,20 +24,35 @@ public class SplatPlayer extends Player {
     public static final double GROUND_SWIM_SPEED = 0.05;
 
     public static final double DEFAULT_SCALE = 0.85;
-    public static final double SQUID_SCALE = 0.5;
 
     @Setter
     private Color color = Color.BLUE;
     private final int maxInk = 200;
     private int ink = maxInk;
-    private Items weapon = Items.BLASTER;
+    private final Items weapon = Items.BLASTER;
     private boolean isSquid = false;
+    private boolean swimmingUp = false;
+
+    private final EntityCreature squid = new EntityCreature(EntityType.ITEM_DISPLAY);
 
     public SplatPlayer(@NotNull UUID uuid, @NotNull String username, @NotNull PlayerConnection playerConnection) {
         super(uuid, username, playerConnection);
         setInk(maxInk);
         setScale(DEFAULT_SCALE);
         setSneakSpeed(1);
+
+        ItemDisplayMeta m = (ItemDisplayMeta) squid.getEntityMeta();
+        m.setItemStack(ItemStack.AIR);
+        m.setPosRotInterpolationDuration(2);
+        squid.setSynchronizationTicks(Long.MAX_VALUE);
+        squid.setNoGravity(true);
+        squid.setBoundingBox(boundingBox);
+    }
+
+    @Override
+    public void spawn() {
+        super.spawn();
+        squid.setInstance(instance, position);
     }
 
     public void setSpeed(double value) {
@@ -49,15 +67,20 @@ public class SplatPlayer extends Player {
         getAttribute(Attribute.GENERIC_SCALE).setBaseValue(value);
     }
 
-    public void toggleSquidForm(boolean squid) {
-        isSquid = squid;
+    public void toggleSquidForm(boolean setSquid) {
+        isSquid = setSquid;
         setInvisible(isSquid);
         if (isSquid) {
             inventory.setItemStack(4, ItemStack.AIR);
-            setScale(SQUID_SCALE);
+            ItemDisplayMeta m = (ItemDisplayMeta) squid.getEntityMeta();
+            m.setItemStack(ItemStack.of(Material.AMETHYST_BLOCK));
+            squid.addPassenger(this);
         } else {
             inventory.setItemStack(4, getWeapon().getItem().getItemStack());
             setScale(DEFAULT_SCALE);
+            ItemDisplayMeta m = (ItemDisplayMeta) squid.getEntityMeta();
+            m.setItemStack(ItemStack.AIR);
+            squid.removePassenger(this);
         }
     }
 
@@ -71,7 +94,45 @@ public class SplatPlayer extends Player {
     protected void movementTick() {
         super.movementTick();
         if (position.y() <= Main.MAP.minHeight) {
-            teleport(Main.MAP.team1Config.spawnPos.getFirst());
+            if (isSquid) squid.teleport(Main.MAP.team1Config.spawnPos.getFirst());
+            else teleport(Main.MAP.team1Config.spawnPos.getFirst());
+        }
+
+        if (isSquid) {
+            float forward = getVehicleInformation().getForward();
+            float sideways = getVehicleInformation().getSideways();
+            boolean shouldJump = getVehicleInformation().shouldJump();
+
+
+            Point offset = getPosition().direction();
+            Point infrontPoint = squid.getPosition().add(offset);
+            Point movePoint = squid.getPosition().add(offset.mul(forward));
+            if (forward != 0f) {
+                squid.getNavigator().setPathTo(movePoint);
+            }
+            squid.lookAt(infrontPoint);
+
+
+            Vec vel = new Vec(Math.cos(position.yaw() / 57.3) * sideways, Math.sin(position.yaw() / 57.3) * sideways)
+                    .add(Math.sin(- position.yaw() / 57.3) * forward, 0, Math.cos(- position.yaw() / 57.3) * forward);
+
+            if (shouldJump && instance.getBlock(squid.getPosition().add(0, -1, 0))!=Block.AIR) {
+                vel = vel.add(0, 10, 0);
+            }
+
+            Block nextBlock = instance.getBlock(squid.getPosition().add(vel));
+            if (nextBlock == color.getBlock()) {
+                vel = vel.add(0, 1, 0);swimmingUp = true;
+            } else {
+                if (swimmingUp){
+                    if((forward != 0 || sideways != 0)) swimmingUp = false;
+                }
+                else vel = vel.add(0, -1, 0);
+            }
+
+            squid.setVelocity(vel.mul(7));
+        } else {
+            squid.teleport(position);
         }
 
         Block b = getBelowBlock();
@@ -91,11 +152,6 @@ public class SplatPlayer extends Player {
         } else {
             setInvisible(false);
         }
-    }
-
-    @Override
-    public void tick(long time) {
-        super.tick(time);
     }
 
     public void addInk(int inkAmount) {
