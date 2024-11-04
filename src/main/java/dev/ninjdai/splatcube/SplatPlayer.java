@@ -5,6 +5,7 @@ import dev.ninjdai.splatcube.utils.BlockUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minestom.server.coordinate.Point;
+import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.*;
 import net.minestom.server.entity.attribute.Attribute;
@@ -33,7 +34,7 @@ public class SplatPlayer extends Player {
     private boolean isSquid = false;
     private boolean swimmingUp = false;
 
-    private final EntityCreature squid = new EntityCreature(EntityType.ITEM_DISPLAY);
+    private final Entity squid = new Entity(EntityType.ITEM_DISPLAY);
 
     public SplatPlayer(@NotNull UUID uuid, @NotNull String username, @NotNull PlayerConnection playerConnection) {
         super(uuid, username, playerConnection);
@@ -102,17 +103,7 @@ public class SplatPlayer extends Player {
             float forward = getVehicleInformation().getForward();
             float sideways = getVehicleInformation().getSideways();
             boolean shouldJump = getVehicleInformation().shouldJump();
-
-
-            Point offset = getPosition().direction();
-            Point infrontPoint = squid.getPosition().add(offset);
-            Point movePoint = squid.getPosition().add(offset.mul(forward));
-            if (forward != 0f) {
-                squid.getNavigator().setPathTo(movePoint);
-            }
-            squid.lookAt(infrontPoint);
-
-
+            
             Vec vel = new Vec(Math.cos(position.yaw() / 57.3) * sideways, Math.sin(position.yaw() / 57.3) * sideways)
                     .add(Math.sin(- position.yaw() / 57.3) * forward, 0, Math.cos(- position.yaw() / 57.3) * forward);
 
